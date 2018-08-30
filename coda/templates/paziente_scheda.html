@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  {% if paziente %}
+  <h1>Name: {{paziente.first_name}} {{paziente.last_name}}</h1>
+
+  <p><strong>Time of Arrival:</strong> {{paziente.t_arrival}}</p>
+  <p><strong>Priority Code: </strong></strong><a href=" {% url 'priority-detail' paziente.priority_code.pk %} ">{{ paziente.priority_code }}</a></p>
+  {% else %}
+  <p><strong>You don't have a paziente on your user</strong></p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Paziente List</h1>
+  {% if paziente_list %}
+    <ul>
+      {% for paziente in paziente_list %}
+        <li>
+          <a href="{{ paziente.get_absolute_url }}">{{ paziente.first_name }} {{paziente.last_name}}</a>{% if perms.coda.can_change_priority %} <a href="{% url 'change_paziente_priority' paziente.id %}">change-priority</a>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no pazienti in the psoccorso.</p>
+  {% endif %}
+{% endblock %}

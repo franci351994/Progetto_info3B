@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Pronto Soccorso Home</h1>
+  <p>Welcome to Pronto Soccorso, a website developed by <em>Mozilla Developer Network</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The pronto soccorso has the following record counts:</p>
+  <ul>
+    <li><strong>Pazienti:</strong> {{ num_Pazienti }}</li>
+  </ul>
+
+  <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+{% endblock %}

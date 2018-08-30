@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Priority List</h1>
+  {% if priority_list %}
+  <ul>
+    {% for priority in priority_list %}
+      <li>
+        <a href="{{ priority.get_absolute_url }}">{{ priority.val }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no priority in the psoccorso.</p>
+  {% endif %}
+{% endblock %}

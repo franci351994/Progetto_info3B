@@ -1,0 +1,8 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Name: {{paziente.first_name}} {{paziente.last_name}}</h1>
+
+  <p><strong>Time of Arrival:</strong> {{paziente.t_arrival}}</p>
+  <p><strong>Priority Code:</strong><a href=" {% url 'priority-detail' paziente.priority_code.pk %} ">{{ paziente.priority_code }}</a></p>
+{% endblock %}
