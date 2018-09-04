@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Paziente(models.Model):
 
@@ -8,11 +9,13 @@ class Paziente(models.Model):
 
     last_name = models.CharField(max_length=200)
 
-    rif = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
+    rif = models.OneToOneField(User, on_delete=models.CASCADE)
 
     t_arrival = models.DateTimeField(auto_now_add=True)
 
     priority_code = models.ForeignKey('Priority', on_delete=models.SET_NULL, blank=True, null=True)
+
+    priority_val = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
 
     class Meta:
         permissions = (("can_see_all", "Can see all pazienti"),("can_change_priority", "Can change priority code of all pazienti"),)

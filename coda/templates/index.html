@@ -1,5 +1,21 @@
 {% extends "base_generic.html" %}
 
+{% block sidebar %}
+  {% if user.is_authenticated %}
+  <ul class="sidebar-nav">
+    <li><a href="{% url 'index' %}">Home</a></li>
+    {% if perms.coda.can_see_all %}
+    <li><a href="{% url 'pazienti' %}">All pazienti</a></li>
+    {% endif %}
+    <li><a href="{% url 'priority' %}">All priority</a></li>
+  </ul>
+    <li>User: {{ user.get_username }}</li>
+    <li><a href="{% url 'paziente-scheda' %}">Scheda</a></li>
+    <li><a href="{% url 'logout'%}?next={% url 'access' %}">Logout</a></li>
+  </ul>
+  {% endif %}
+{% endblock %}
+
 {% block content %}
   <h1>Pronto Soccorso Home</h1>
   <p>Welcome to Pronto Soccorso, a website developed by <em>Mozilla Developer Network</em>!</p>

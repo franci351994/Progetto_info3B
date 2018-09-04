@@ -97,10 +97,12 @@ class PazienteCreate(CreateView):
 
     model = Paziente
     fields = ['first_name', 'last_name', 'priority_code']
+    initial = {'priority_val': 1}
 
     def form_valid(self, form):
          user = self.request.user
          form.instance.rif = user
+         form.instance.priority_val = form.instance.priority_code.val
          return super(PazienteCreate, self).form_valid(form)
 
 def access(request):

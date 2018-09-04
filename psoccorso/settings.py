@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'coda.apps.CodaConfig',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
