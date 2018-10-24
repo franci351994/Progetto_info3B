@@ -9,13 +9,13 @@ class Paziente(models.Model):
 
     last_name = models.CharField(max_length=200)
 
-    rif = models.OneToOneField(User, on_delete=models.CASCADE)
+    rif = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
     t_arrival = models.DateTimeField(auto_now_add=True)
 
     priority_code = models.ForeignKey('Priority', on_delete=models.SET_NULL, blank=True, null=True)
 
-    priority_val = models.IntegerField(validators=[MaxValueValidator(10), MinValueValidator(1)])
+    priority_val = models.IntegerField(validators=[MaxValueValidator(9), MinValueValidator(1)])
 
     class Meta:
         permissions = (("can_see_all", "Can see all pazienti"),("can_change_priority", "Can change priority code of all pazienti"),)
@@ -26,17 +26,21 @@ class Paziente(models.Model):
 
     def get_absolute_url(self):
 
-        return reverse('paziente-detail', args=[str(self.id)])
+        return reverse('paziente-detail', args=[str(self.rif.id)])
 
 class Priority(models.Model):
 
     val = models.IntegerField()
 
+    color = models.CharField(max_length=15)
+
     description = models.TextField()
+
+    time = models.DurationField(null=True)
 
     def __str__(self):
 
-        return str(self.val) + ": " + self.description
+        return str(self.color) + ": " + self.description
 
     def get_absolute_url(self):
 

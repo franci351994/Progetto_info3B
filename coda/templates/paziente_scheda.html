@@ -3,12 +3,6 @@
 {% block sidebar %}
   {% if user.is_authenticated %}
   <ul class="sidebar-nav">
-    <li><a href="{% url 'index' %}">Home</a></li>
-    {% if perms.coda.can_see_all %}
-    <li><a href="{% url 'pazienti' %}">All pazienti</a></li>
-    {% endif %}
-    <li><a href="{% url 'priority' %}">All priority</a></li>
-  </ul>
     <li>User: {{ user.get_username }}</li>
     <li><a href="{% url 'paziente-scheda' %}">Scheda</a></li>
     <li><a href="{% url 'logout'%}?next={% url 'access' %}">Logout</a></li>
@@ -18,10 +12,13 @@
 
 {% block content %}
   {% if paziente %}
-  <h1>Name: {{paziente.first_name}} {{paziente.last_name}}</h1>
+  <div class="center-block">
+    <h1 class="text-danger">Name: {{paziente.first_name}} {{paziente.last_name}}</h1>
+  </div>
 
   <p><strong>Time of Arrival:</strong> {{paziente.t_arrival}}</p>
-  <p><strong>Priority Code: </strong></strong><a href=" {% url 'priority-detail' paziente.priority_code.pk %} ">{{ paziente.priority_code }}</a></p>
+  <p><strong>Priority Code: </strong><a href=" {% url 'priority-detail' paziente.priority_code.pk %} ">{{ paziente.priority_code }}</a></p>
+  <p><a href=" {%url 'time_total' %}">Waiting Time</a></p>
   {% else %}
   <p><strong>You don't have a paziente on your user</strong></p>
   {% endif %}
