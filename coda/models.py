@@ -26,7 +26,7 @@ class Paziente(models.Model):
 
     def get_absolute_url(self):
 
-        return reverse('paziente-detail', args=[str(self.rif.id)])
+        return reverse('paziente-scheda')
 
 class Priority(models.Model):
 
