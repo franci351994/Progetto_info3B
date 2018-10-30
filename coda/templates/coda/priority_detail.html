@@ -2,17 +2,24 @@
 
 {% block sidebar %}
   {% if user.is_authenticated %}
-  <ul class="sidebar-nav">
-    <li>User: {{ user.get_username }}</li>
-    <li><a href="{% url 'paziente-scheda' %}">Scheda</a></li>
-    <li><a href="{% url 'logout'%}?next={% url 'access' %}">Logout</a></li>
-  </ul>
+  <div class="col-sm-2">
+  <nav class="navbar bg-danger">
+    <ul class="sidebar-nav">
+      <li class="nav-item text-white">User: {{ user.get_username }}</li>
+      <li class="nav-item" ><a class="nav-link text-white" href="{% url 'paziente-scheda' %}">Scheda</a></li>
+      <li class=nav-item><a class="nav-link text-white" href="{% url 'logout'%}?next={% url 'access' %}">Logout</a></li>
+    </ul>
+  </nav>
+  </div>
   {% endif %}
 {% endblock %}
 
 {% block content %}
-  <h1>Colore: {{ priority.color }}</h1>
 
-  <p><strong>Description: </strong> {{priority.description}}</p>
-  <p><strong> Time operation: </strong> {{time_str}} h/min/sec </p>
+  <h3>Priorità</h3>
+
+  <p><strong>Colore:</strong> {{ priority.color }}</p>
+  <p><strong>Descrizione: </strong> {{priority.description}}</p>
+  <p><strong> Durata dell'operazione: </strong> {{time_str}} h/min/sec </p>
+
 {% endblock %}

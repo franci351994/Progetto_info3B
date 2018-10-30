@@ -2,16 +2,22 @@
 
 {% block sidebar %}
   {% if user.is_authenticated %}
-  <ul class="sidebar-nav">
-    <li>User: {{ user.get_username }}</li>
-    <li><a href="{% url 'paziente-scheda' %}">Scheda</a></li>
-    <li><a href="{% url 'logout'%}?next={% url 'access' %}">Logout</a></li>
-  </ul>
+  <div class="col-sm-2">
+  <nav class="navbar bg-danger">
+    <ul class="sidebar-nav">
+      <li class="nav-item text-white">User: {{ user.get_username }}</li>
+      <li class="nav-item" ><a class="nav-link text-white" href="{% url 'paziente-scheda' %}">Scheda</a></li>
+      <li class=nav-item><a class="nav-link text-white" href="{% url 'logout'%}?next={% url 'access' %}">Logout</a></li>
+    </ul>
+  </nav>
+  </div>
   {% endif %}
 {% endblock %}
 
 {% block content %}
-  <h1>Waiting Time</h1>
 
-  <p>Your waiting time is: {{ time_tot }} h/min/sec</p>
+  <h3>Tempo di attesa</h3>
+
+  <p>Ti chiediamo di attendere all'incirca ancora per: {{ time_tot }} h/min/sec</p>
+
 {% endblock %}
