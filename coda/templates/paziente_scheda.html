@@ -2,7 +2,7 @@
 
 {% block sidebar %}
   {% if user.is_authenticated %}
-  <div class="col-sm-2">
+  <div class="col-sm-2 col-sm-offset-1">
   <nav class="navbar bg-danger">
     <ul class="sidebar-nav">
       <li class="nav-item text-white">User: {{ user.get_username }}</li>
