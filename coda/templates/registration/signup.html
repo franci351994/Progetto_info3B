@@ -1,6 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<div class="container">
   <h2>Sign up</h2>
   <form method="post">
     {% csrf_token %}
@@ -16,6 +17,9 @@
         {% endfor %}
       </p>
     {% endfor %}
-    <button type="submit">Sign up</button>
+    <button class="btn btn-danger" type="submit">Sign up</button>
   </form>
+  <p></p>
+  <p><a href="{% url 'access' %}" class="btn btn-danger " role="button">Indietro</a></p>
+</div>
 {% endblock %}

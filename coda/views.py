@@ -7,40 +7,23 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
-from coda.forms import ChangePazientePriorityModelForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User
-
-def index(request):
-    num_Pazienti = Paziente.objects.all().count
-    num_visits = request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits+1
-
-    context = {
-        'num_Pazienti': num_Pazienti,
-        'num_visits' : num_visits,
-    }
-
-    return render(request, 'index.html', context=context)
-
-
-class PazienteListView(generic.ListView):
-
-    model = Paziente
-
-class PazienteDetailView(generic.DetailView):
-
-    model = Paziente
-
-class PriorityListView(generic.ListView):
-
-    model = Priority
+from datetime import timedelta
 
 class PriorityDetailView(generic.DetailView):
 
     model = Priority
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        context['time_str'] = str(self.object.time)
+
+        return context
 
 @login_required
 def pazientescheda(request):
@@ -53,31 +36,6 @@ def pazientescheda(request):
         'paziente': paziente,
     }
     return render(request, 'paziente_scheda.html', context=context)
-
-@permission_required('coda.can_change_priority')
-def change_paziente_priority(request, pk):
-    paziente = get_object_or_404(Paziente, pk=pk)
-
-    if request.method == 'POST':
-
-        change_paziente_priority_form = ChangePazientePriorityModelForm(request.POST)
-
-        if change_paziente_priority_form.is_valid():
-            paziente.priority_code = change_paziente_priority_form.cleaned_data['priority_code']
-            paziente.save()
-
-            return HttpResponseRedirect(reverse('pazienti'))
-
-    else:
-        proposed_priority_code = paziente.priority_code
-        change_paziente_priority_form = ChangePazientePriorityModelForm(initial={'priority_code': proposed_priority_code})
-
-    context= {
-        'form': change_paziente_priority_form,
-        'paziente': paziente,
-    }
-
-    return render(request, 'coda/change_paziente_priority.html', context)
 
 def signup(request):
     if request.method == 'POST':
@@ -103,10 +61,44 @@ class PazienteCreate(CreateView):
          user = self.request.user
          form.instance.rif = user
          form.instance.priority_val = form.instance.priority_code.val
+
          return super(PazienteCreate, self).form_valid(form)
+
+    def post(self,request,*args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            self.form_valid(form)
+
+            lista_pazienti_min = Paziente.objects.filter(priority_val__lt = self.object.priority_val)
+
+            for paziente in lista_pazienti_min:
+                if paziente.priority_val<6:
+                    if paziente.priority_val<(paziente.priority_code.val+3):
+                        paziente.priority_val=paziente.priority_val+1
+                        paziente.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        self.object = None
+        return self.form_invalid(form)
 
 def access(request):
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect('paziente-scheda')
 
     return render(request, 'access.html')
+
+def time_tot(request):
+    t = timedelta()
+    paz = Paziente.objects.get(rif=request.user)
+    lista = Paziente.objects.filter(priority_val__gte = paz.priority_val).order_by('-priority_val', 't_arrival')
+
+    for paziente in lista:
+        if paziente == paz:
+            break
+        t=t+paziente.priority_code.time
+
+    context = {
+        'time_tot': str(t),
+    }
+
+    return render(request, 'time_tot.html', context=context)

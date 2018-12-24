@@ -2,27 +2,29 @@
 
 {% block sidebar %}
   {% if user.is_authenticated %}
-  <ul class="sidebar-nav">
-    <li><a href="{% url 'index' %}">Home</a></li>
-    {% if perms.coda.can_see_all %}
-    <li><a href="{% url 'pazienti' %}">All pazienti</a></li>
-    {% endif %}
-    <li><a href="{% url 'priority' %}">All priority</a></li>
-  </ul>
-    <li>User: {{ user.get_username }}</li>
-    <li><a href="{% url 'paziente-scheda' %}">Scheda</a></li>
-    <li><a href="{% url 'logout'%}?next={% url 'access' %}">Logout</a></li>
-  </ul>
+  <div class="col-sm-2 col-sm-offset-1">
+  <nav class="navbar bg-danger">
+    <ul class="sidebar-nav">
+      <li class="nav-item text-white">User: {{ user.get_username }}</li>
+      <li class="nav-item" ><a class="nav-link text-white" href="{% url 'paziente-scheda' %}">Scheda</a></li>
+      <li class=nav-item><a class="nav-link text-white" href="{% url 'logout'%}?next={% url 'access' %}">Logout</a></li>
+    </ul>
+  </nav>
+  </div>
   {% endif %}
 {% endblock %}
 
 {% block content %}
   {% if paziente %}
-  <h1>Name: {{paziente.first_name}} {{paziente.last_name}}</h1>
+  <div class="center-block">
+    <h3>Scheda Paziente</h3>
+  </div>
 
-  <p><strong>Time of Arrival:</strong> {{paziente.t_arrival}}</p>
-  <p><strong>Priority Code: </strong></strong><a href=" {% url 'priority-detail' paziente.priority_code.pk %} ">{{ paziente.priority_code }}</a></p>
+  <p><strong>Nome: </strong> {{paziente.first_name}} {{paziente.last_name}}</p>
+  <p><strong>Ora di arrivo:</strong> {{paziente.t_arrival}}</p>
+  <p><strong>Codice di Priorità: </strong> {{ paziente.priority_code }} <a href=" {% url 'priority-detail' paziente.priority_code.pk %} " class="btn btn-danger btn-sm" role="button">Dettagli</a></p>
+  <p><a href=" {%url 'time_total' %}" class="btn btn-danger " role="button">Attesa</a></p>
   {% else %}
-  <p><strong>You don't have a paziente on your user</strong></p>
+  <p><strong>Il tuo utente non ha associato nessun paziente</strong></p>
   {% endif %}
 {% endblock %}

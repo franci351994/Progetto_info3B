@@ -16,10 +16,8 @@
 
 {% block content %}
 
-  <h3>Priorità</h3>
+  <h3>Tempo di attesa</h3>
 
-  <p><strong>Colore:</strong> {{ priority.color }}</p>
-  <p><strong>Descrizione: </strong> {{priority.description}}</p>
-  <p><strong> Durata dell'operazione: </strong> {{time_str}} h/min/sec </p>
+  <p>Ti chiediamo di attendere all'incirca ancora per: {{ time_tot }} h/min/sec</p>
 
 {% endblock %}
